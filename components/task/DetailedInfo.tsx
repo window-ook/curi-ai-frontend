@@ -20,12 +20,12 @@ export const DetailedInfo = () => {
 
   return (
     <div className="w-full">
-      <h2 className="mb-6 text-subtitle font-bold custom-black-900">상세 정보</h2>
+      <h2 className="mb-6 text-subtitle font-bold">상세 정보</h2>
 
       <div className='py-7 px-5 rounded-lg bg-custom-gray-100'>
         {/* 회차 정보 */}
         <div className="mb-6">
-          <h3 className="mb-4 text-2xl font-bold custom-black-900">회차 정보</h3>
+          <h3 className="mb-4 text-2xl font-bold">회차 정보</h3>
 
           {/* 날짜 선택 */}
           <div className="mb-4 flex items-center gap-6">
@@ -35,7 +35,7 @@ export const DetailedInfo = () => {
               placeholder="날짜를 선택해주세요"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full px-4 py-4 rounded-lg border border-custom-gray-200 bg-white text-custom-black-900 placeholder:text-custom-gray-700 placeholder:font-medium placeholder:text-center focus:outline-none focus:border-success-400"
+              className="w-full px-4 py-4 rounded-lg border border-custom-gray-200 bg-white placeholder:text-custom-gray-700 placeholder:font-medium placeholder:text-center focus:outline-none focus:border-success-400"
             />
           </div>
 
@@ -46,7 +46,7 @@ export const DetailedInfo = () => {
               <button
                 type="button"
                 onClick={() => setStartPeriod(startPeriod === 'AM' ? 'PM' : 'AM')}
-                className="px-4 py-2 max-[840px]:px-2 max-[840px]:py-1 rounded-lg border border-custom-gray-200 bg-custom-gray-100 text-base max-[840px]:text-sm font-semibold text-custom-black-900 whitespace-nowrap transition-colors cursor-pointer"
+                className="px-4 py-2 max-[840px]:px-2 max-[840px]:py-1 rounded-lg border border-custom-gray-200 bg-custom-gray-100 text-base max-[840px]:text-sm font-semibold whitespace-nowrap transition-colors cursor-pointer"
               >
                 {startPeriod === 'AM' ? '오전' : '오후'}
               </button>
@@ -55,15 +55,15 @@ export const DetailedInfo = () => {
                   type="text"
                   value={startHour}
                   onChange={(e) => setStartHour(e.target.value)}
-                  className="w-16 max-[840px]:w-12 px-2 max-[840px]:px-1 py-2 bg-white text-center text-xl max-[840px]:text-lg font-medium text-custom-black-900 focus:outline-none"
+                  className="w-16 max-[840px]:w-12 px-2 max-[840px]:px-1 py-2 bg-white text-center text-xl max-[840px]:text-lg font-medium focus:outline-none"
                   maxLength={2}
                 />
-                <span className="text-xl max-[840px]:text-lg font-medium text-custom-black-900">:</span>
+                <span className="text-xl max-[840px]:text-lg font-medium text-">:</span>
                 <input
                   type="text"
                   value={startMinute}
                   onChange={(e) => setStartMinute(e.target.value)}
-                  className="w-16 max-[840px]:w-12 px-2 max-[840px]:px-1 py-2 bg-white text-center text-xl max-[840px]:text-lg font-medium text-custom-black-900 focus:outline-none"
+                  className="w-16 max-[840px]:w-12 px-2 max-[840px]:px-1 py-2 bg-white text-center text-xl max-[840px]:text-lg font-medium focus:outline-none"
                   maxLength={2}
                 />
               </div>
@@ -77,7 +77,7 @@ export const DetailedInfo = () => {
               <button
                 type="button"
                 onClick={() => setEndPeriod(endPeriod === 'AM' ? 'PM' : 'AM')}
-                className="px-4 py-2 max-[840px]:px-2 max-[840px]:py-1 rounded-lg border border-custom-gray-200 bg-custom-gray-100 text-base max-[840px]:text-sm font-semibold text-custom-black-900 whitespace-nowrap transition-colors cursor-pointer"
+                className="px-4 py-2 max-[840px]:px-2 max-[840px]:py-1 rounded-lg border border-custom-gray-200 bg-custom-gray-100 text-base max-[840px]:text-sm font-semibold whitespace-nowrap transition-colors cursor-pointer"
               >
                 {endPeriod === 'AM' ? '오전' : '오후'}
               </button>
@@ -86,15 +86,15 @@ export const DetailedInfo = () => {
                   type="text"
                   value={endHour}
                   onChange={(e) => setEndHour(e.target.value)}
-                  className="w-16 max-[840px]:w-12 px-2 max-[840px]:px-1 py-2 bg-white text-center text-xl max-[840px]:text-lg font-medium text-custom-black-900 focus:outline-none"
+                  className="w-16 max-[840px]:w-12 px-2 max-[840px]:px-1 py-2 bg-white text-center text-xl max-[840px]:text-lg font-medium focus:outline-none"
                   maxLength={2}
                 />
-                <span className="text-xl max-[840px]:text-lg font-medium text-custom-black-900">:</span>
+                <span className="text-xl max-[840px]:text-lg font-medium text-">:</span>
                 <input
                   type="text"
                   value={endMinute}
                   onChange={(e) => setEndMinute(e.target.value)}
-                  className="w-16 max-[840px]:w-12 px-2 max-[840px]:px-1 py-2 bg-white text-center text-xl max-[840px]:text-lg font-medium text-custom-black-900 focus:outline-none"
+                  className="w-16 max-[840px]:w-12 px-2 max-[840px]:px-1 py-2 bg-white text-center text-xl max-[840px]:text-lg font-medium focus:outline-none"
                   maxLength={2}
                 />
               </div>
@@ -104,7 +104,7 @@ export const DetailedInfo = () => {
 
         {/* 활동 내용 */}
         <div>
-          <h3 className="mb-2 text-2xl font-bold custom-black-900">활동 내용</h3>
+          <h3 className="mb-2 text-2xl font-bold ">활동 내용</h3>
           <p className="mb-4 text-lg text-custom-gray-700 font-medium">날짜별 활동 내용을 간단히 적어주세요</p>
           <div className={`p-4 rounded-lg border bg-white flex flex-col ${isValid
             ? 'border-success-400'
@@ -115,7 +115,7 @@ export const DetailedInfo = () => {
               onChange={(e) => setActivityContent(e.target.value)}
               maxLength={MAX_LENGTH}
               rows={4}
-              className="w-full text-custom-black-900 placeholder:text-custom-gray-800 focus:outline-none resize-none mb-2"
+              className="w-full placeholder:text-custom-gray-800 focus:outline-none resize-none mb-2"
             />
             <p className={`text-sm font-medium text-right ${isValid ? 'text-custom-gray-700' : characterCount > 0 ? 'text-text-error' : 'text-custom-gray-700'}`}>
               {characterCount} / {MAX_LENGTH}자 (최소 {MIN_LENGTH}자)

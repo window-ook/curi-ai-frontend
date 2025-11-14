@@ -13,7 +13,7 @@ export const ContentTitle = () => {
 
   return (
     <div className="w-full">
-      <h2 className="mb-4 text-subtitle font-bold custom-black-900">콘텐츠 제목</h2>
+      <h2 className="mb-4 text-subtitle font-bold">콘텐츠 제목</h2>
       <div className={`h-36 p-4 rounded-lg border border-custom-gray-200 flex flex-col justify-between ${isValid
         ? 'border-success-400'
         : characterCount > 0
@@ -26,7 +26,7 @@ export const ContentTitle = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           maxLength={MAX_LENGTH}
-          className="w-full text-custom-black-900 font-medium placeholder:text-custom-gray-700 focus:outline-none"
+          className="w-full font-medium placeholder:text-custom-gray-700 focus:outline-none"
         />
         <p
           className={`text-sm font-medium text-right ${isValid ? 'text-custom-gray-700' : characterCount > 0 ? 'text-text-error' : 'text-custom-gray-700'}`}

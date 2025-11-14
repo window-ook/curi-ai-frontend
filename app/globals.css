@@ -11,15 +11,12 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-@custom-media --mobile (max-width: 767px);
-@custom-media --desktop (min-width: 1100px);
-
 @theme {
   /* 브레이크 포인트 */
   --breakpoint-desktop: 1100px;
   --breakpoint-mobile: 767px;
 
-  /* 컨테이너 */
+  /* 컨테이너 넓이 */
   --container-desktop: 1100px;
 
   /* 폰트 */
