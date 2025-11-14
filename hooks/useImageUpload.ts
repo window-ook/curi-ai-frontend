@@ -5,12 +5,13 @@ import type { IImageFile } from '@/types/task/image';
 /**
  * 이미지 업로드 기능을 제공하는 커스텀 훅
  * - 파일 선택 및 미리보기 생성
- * - 파일 유효성 검증 (크기, 형식)
+ * - 파일 유효성 검증: 크기, 형식
  * - 메모리 관리 (Object URL 해제)
  * @returns 이미지 상태 및 핸들러 함수들
  */
 export const useImageUpload = () => {
   const [image, setImage] = useState<IImageFile | null>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSelectImage = () => fileInputRef.current?.click();
@@ -19,7 +20,6 @@ export const useImageUpload = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // 파일 크기 및 형식 검증
     const isValid = validateImage(file);
     if (!isValid) return;
 

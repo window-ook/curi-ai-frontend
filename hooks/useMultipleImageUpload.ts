@@ -6,7 +6,7 @@ import type { IImageFile } from '@/types/task/image';
  * 여러 장의 이미지 업로드 기능을 제공하는 커스텀 훅
  * - 최대 4장까지 이미지 업로드 가능
  * - 파일 선택 및 미리보기 생성
- * - 파일 유효성 검증 (크기, 형식)
+ * - 파일 유효성 검증: 크기, 형식
  * - 메모리 관리 (Object URL 해제)
  * @param maxImages - 최대 업로드 가능한 이미지 수 (기본값: 4)
  * @returns 이미지 배열 및 핸들러 함수들
@@ -14,6 +14,7 @@ import type { IImageFile } from '@/types/task/image';
 export const useMultipleImageUpload = (maxImages: number = 4) => {
   const [images, setImages] = useState<IImageFile[]>([]);
   const [replacingIndex, setReplacingIndex] = useState<number | null>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSelectImage = () => {
@@ -73,7 +74,6 @@ export const useMultipleImageUpload = (maxImages: number = 4) => {
         invalidFiles.push(file.name);
       }
     });
-
 
     if (invalidFiles.length > 0) return;
 
