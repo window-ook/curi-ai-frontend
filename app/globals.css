@@ -31,6 +31,7 @@ body {
   --text-subtitle-small: 1.375rem;
 
   /* 컬러 */
+  /* default, hover, active, disabled */
   --color-custom-black-900: #121212;
   --color-custom-black-600: #323232;
   --color-custom-black-400: #565656;

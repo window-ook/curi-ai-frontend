@@ -1,5 +1,6 @@
 'use client';
 
+import Button from '@/components/shared/Button';
 import { useState } from 'react';
 
 const MIN_LENGTH = 8;
@@ -19,8 +20,8 @@ export const DetailedInfo = () => {
   const isValid = characterCount >= MIN_LENGTH && characterCount <= MAX_LENGTH;
 
   return (
-    <div className="w-full">
-      <h2 className="mb-6 text-subtitle font-bold">상세 정보</h2>
+    <div className="w-full flex flex-col gap-4">
+      <h2 className="text-subtitle font-bold">상세 정보</h2>
 
       <div className='py-7 px-5 rounded-lg bg-custom-gray-100'>
         {/* 회차 정보 */}
@@ -43,27 +44,29 @@ export const DetailedInfo = () => {
           <div className="mb-4 flex items-center gap-6">
             <label className="block text-lg text-custom-black-400 font-semibold whitespace-nowrap">시작 시간</label>
             <div className="w-full p-4 max-[840px]:p-2 rounded-lg border border-custom-gray-200 bg-white flex items-center justify-between">
-              <button
+              <Button
                 type="button"
+                variant='outline'
+                size="md"
                 onClick={() => setStartPeriod(startPeriod === 'AM' ? 'PM' : 'AM')}
-                className="px-4 py-2 max-[840px]:px-2 max-[840px]:py-1 rounded-lg border border-custom-gray-200 bg-custom-gray-100 text-base max-[840px]:text-sm font-semibold whitespace-nowrap transition-colors cursor-pointer"
+                className="min-[840px]:px-3 min-[840px]:py-1 min-[768px]:max-[840px]:text-sm whitespace-nowrap"
               >
                 {startPeriod === 'AM' ? '오전' : '오후'}
-              </button>
-              <div className="w-full flex justify-center items-center gap-2 max-[840px]:gap-1">
+              </Button>
+              <div className="w-full flex justify-center items-center gap-2 min-[768px]:max-[840px]:gap-1">
                 <input
                   type="text"
                   value={startHour}
                   onChange={(e) => setStartHour(e.target.value)}
-                  className="w-16 max-[840px]:w-12 px-2 max-[840px]:px-1 py-2 bg-white text-center text-xl max-[840px]:text-lg font-medium focus:outline-none"
+                  className="w-16 min-[768px]:max-[840px]:w-12 px-2 min-[768px]:max-[840px]:px-1 py-2 bg-white text-center text-xl min-[768px]:max-[840px]:text-lg font-medium focus:outline-none"
                   maxLength={2}
                 />
-                <span className="text-xl max-[840px]:text-lg font-medium text-">:</span>
+                <span className="text-xl min-[768px]:max-[840px]:text-lg font-medium text-">:</span>
                 <input
                   type="text"
                   value={startMinute}
                   onChange={(e) => setStartMinute(e.target.value)}
-                  className="w-16 max-[840px]:w-12 px-2 max-[840px]:px-1 py-2 bg-white text-center text-xl max-[840px]:text-lg font-medium focus:outline-none"
+                  className="w-16 min-[768px]:max-[840px]:w-12 px-2 min-[768px]:max-[840px]:px-1 py-2 bg-white text-center text-xl min-[768px]:max-[840px]:text-lg font-medium focus:outline-none"
                   maxLength={2}
                 />
               </div>
@@ -74,27 +77,29 @@ export const DetailedInfo = () => {
           <div className="mb-4 flex items-center gap-6">
             <label className="block text-lg text-custom-black-400 font-semibold whitespace-nowrap">종료 시간</label>
             <div className="w-full p-4 max-[840px]:p-2 rounded-lg border border-custom-gray-200 bg-white flex items-center justify-between">
-              <button
+              <Button
                 type="button"
+                variant='outline'
+                size="md"
                 onClick={() => setEndPeriod(endPeriod === 'AM' ? 'PM' : 'AM')}
-                className="px-4 py-2 max-[840px]:px-2 max-[840px]:py-1 rounded-lg border border-custom-gray-200 bg-custom-gray-100 text-base max-[840px]:text-sm font-semibold whitespace-nowrap transition-colors cursor-pointer"
+                className="min-[840px]:px-3 min-[840px]:py-1 min-[768px]:max-[840px]:text-sm whitespace-nowrap"
               >
                 {endPeriod === 'AM' ? '오전' : '오후'}
-              </button>
-              <div className="w-full flex justify-center items-center gap-2 max-[840px]:gap-1">
+              </Button>
+              <div className="w-full flex justify-center items-center gap-2 min-[768px]:max-[840px]:gap-1">
                 <input
                   type="text"
                   value={endHour}
                   onChange={(e) => setEndHour(e.target.value)}
-                  className="w-16 max-[840px]:w-12 px-2 max-[840px]:px-1 py-2 bg-white text-center text-xl max-[840px]:text-lg font-medium focus:outline-none"
+                  className="w-16 min-[768px]:max-[840px]:w-12 px-2 min-[768px]:max-[840px]:px-1 py-2 bg-white text-center text-xl min-[768px]:max-[840px]:text-lg font-medium focus:outline-none"
                   maxLength={2}
                 />
-                <span className="text-xl max-[840px]:text-lg font-medium text-">:</span>
+                <span className="text-xl min-[768px]:max-[840px]:text-lg font-medium text-">:</span>
                 <input
                   type="text"
                   value={endMinute}
                   onChange={(e) => setEndMinute(e.target.value)}
-                  className="w-16 max-[840px]:w-12 px-2 max-[840px]:px-1 py-2 bg-white text-center text-xl max-[840px]:text-lg font-medium focus:outline-none"
+                  className="w-16 min-[768px]:max-[840px]:w-12 px-2 min-[768px]:max-[840px]:px-1 py-2 bg-white text-center text-xl min-[768px]:max-[840px]:text-lg font-medium focus:outline-none"
                   maxLength={2}
                 />
               </div>
@@ -125,12 +130,9 @@ export const DetailedInfo = () => {
       </div>
 
       {/* 회차 추가하기 버튼 */}
-      <button
-        type="button"
-        className="w-full mt-6 px-5 py-4 rounded-lg bg-custom-black-600 text-white text-xl font-semibold hover:bg-custom-black-400 transition-colors cursor-pointer"
-      >
+      <Button type="button" variant="black" size="lg" fullWidth className='rounded-lg'>
         회차 추가하기
-      </button>
+      </Button>
     </div>
   );
 };

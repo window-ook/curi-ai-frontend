@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Button from '@/components/shared/Button';
 import { useImageUpload } from '@/hooks/useImageUpload';
 
 export const RepresentativeImage = () => {
@@ -49,14 +50,14 @@ export const RepresentativeImage = () => {
           <p className="text-subtitle-small text-custom-gray-700 font-medium text-center">
             1:1 비율의 정사각형 이미지를 추천합니다
           </p>
-          <button
+          <Button
             type="button"
+            variant="black"
             onClick={handleSelectImage}
-            className="px-5 py-4 rounded-lg bg-custom-black-600 text-white text-lg font-medium hover:bg-custom-black-400 transition-colors cursor-pointer"
-            aria-label="이미지 업로드"
-          >
+            size="lg"
+            className='w-40 rounded-lg'>
             이미지 업로드
-          </button>
+          </Button>
         </div>
       )}
     </div>
