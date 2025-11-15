@@ -2,13 +2,13 @@
 
 import CategorySelection from '@/components/task/CategorySelection';
 import Button from '@/components/shared/Button';
-import { useCategoryStore } from '@/store/useCategoryStore';
 import { RepresentativeImage } from '@/components/task/RepresentativeImage';
 import { AdditionalImages } from '@/components/task/AdditionalImages';
 import { Category } from '@/components/task/Category';
 import { ContentTitle } from '@/components/task/ContentTitle';
 import { ActivityMethod } from '@/components/task/ActivityMethod';
 import { DetailedInfo } from '@/components/task/DetailedInfo';
+import { useCategoryStore } from '@/store/useCategoryStore';
 
 export default function TaskContainer() {
   const { isSelecting } = useCategoryStore();
@@ -25,7 +25,7 @@ export default function TaskContainer() {
         </div>
 
         {/* 2열 - 폼 컴포넌트 */}
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-12">
           <Category />
           <ContentTitle />
           <ActivityMethod />
