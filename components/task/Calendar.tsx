@@ -104,7 +104,7 @@ export default function Calendar({ selectedDate, onDateSelect, onClose, minDate,
         <div className="flex gap-2">
           <button
             onClick={goToPreviousMonth}
-            className="size-8 rounded-lg border border-custom-gray-200 flex items-center justify-center hover:bg-custom-gray-100 transition-colors"
+            className="size-8 rounded-lg border border-custom-gray-200 flex items-center justify-center hover:bg-custom-gray-100 transition-colors cursor-pointer"
             aria-label="이전 달"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -113,7 +113,7 @@ export default function Calendar({ selectedDate, onDateSelect, onClose, minDate,
           </button>
           <button
             onClick={goToNextMonth}
-            className="size-8 rounded-lg border border-custom-gray-200 flex items-center justify-center hover:bg-custom-gray-100 transition-colors"
+            className="size-8 rounded-lg border border-custom-gray-200 flex items-center justify-center hover:bg-custom-gray-100 transition-colors cursor-pointer"
             aria-label="다음 달"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">

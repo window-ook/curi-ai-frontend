@@ -3,7 +3,7 @@
 import Button from '@/components/shared/Button';
 import Calendar from '@/components/task/Calendar';
 import Toast from '@/components/shared/Toast';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 const MIN_LENGTH = 8;
 const MAX_LENGTH = 800;
@@ -37,6 +37,10 @@ export default function SessionInfo({
     const [activityContent, setActivityContent] = useState('');
     const [toastMessage, setToastMessage] = useState('');
     const [isToastVisible, setIsToastVisible] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
+
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     const characterCount = activityContent.length;
     const isValid = characterCount >= MIN_LENGTH && characterCount <= MAX_LENGTH;
@@ -76,6 +80,21 @@ export default function SessionInfo({
         setToastMessage(message);
         setIsToastVisible(true);
     }, []);
+
+    // 모바일 스크롤 처리
+    const handleFocus = () => {
+        setIsFocused(true);
+
+        if (!textareaRef.current) return;
+
+        const isMobile = window.innerWidth < 768;
+
+        if (!isMobile) return;
+
+        setTimeout(() => { textareaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }) }, 300);
+    };
+
+    const handleBlur = () => setIsFocused(false);
 
     // 종료 시간을 시작 시간 +1시간으로 자동 설정
     const updateEndTime = useCallback((newStartHour24: number, newStartMinute: number) => {
@@ -184,6 +203,16 @@ export default function SessionInfo({
         }
     }, [endHour, endMinute, endPeriod, startHour, startMinute, startPeriod, isTimeValid, showToast, convertTo24Hour, updateEndTime]);
 
+    // 빈 영역 클릭시 포커스 해제
+    useEffect(() => {
+        const handleClickEmptyArea = (event: MouseEvent) => {
+            if (containerRef.current && !containerRef.current.contains(event.target as Node) && textareaRef.current) textareaRef.current.blur();
+        };
+
+        document.addEventListener('mousedown', handleClickEmptyArea);
+        return () => document.removeEventListener('mousedown', handleClickEmptyArea);
+    }, []);
+
     const formatDate = (date: Date) => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -197,7 +226,7 @@ export default function SessionInfo({
     };
 
     return (
-        <div className='py-7 px-5 rounded-lg bg-custom-gray-100 relative'>
+        <div className='pt-8 pb-12 px-5 rounded-lg bg-custom-gray-100 relative'>
             {/* 삭제 버튼 */}
             {showDelete && (
                 <Button
@@ -225,7 +254,7 @@ export default function SessionInfo({
                         <button
                             type="button"
                             onClick={() => setIsCalendarOpen(!isCalendarOpen)}
-                            className="w-full px-4 py-4 rounded-lg border border-custom-gray-200 bg-white font-medium text-center hover:border-success-400 focus:outline-none focus:border-success-400 transition-colors"
+                            className="w-full px-4 py-4 rounded-lg border border-custom-gray-200 bg-white font-medium text-center hover:border-success-400 focus:outline-none focus:border-success-400 transition-colors cursor-pointer"
                         >
                             {selectedDate ? formatDate(selectedDate) : <span className='text-custom-gray-700'>날짜를 선택해주세요</span>}
                         </button>
@@ -309,17 +338,27 @@ export default function SessionInfo({
             </div>
 
             {/* 활동 내용 */}
-            <div>
+            <div ref={containerRef}>
                 <h3 className="mb-2 text-2xl font-bold ">활동 내용</h3>
                 <p className="mb-4 text-lg text-custom-gray-700 font-medium">날짜별 활동 내용을 간단히 적어주세요</p>
-                <div className={`p-4 rounded-lg border bg-white flex flex-col 
-                    ${isValid ? 'border-success-400' : characterCount > 0 ? 'border-error' : 'border-custom-gray-200'}`}>
+                <div className={`p-4 rounded-lg border bg-white flex flex-col
+                    ${isFocused
+                        ? isValid
+                            ? 'border-success-400'
+                            : characterCount > 0
+                                ? 'border-error'
+                                : 'border-custom-gray-200'
+                        : 'border-custom-gray-200'
+                    }`}>
                     <textarea
+                        ref={textareaRef}
                         placeholder="활동 내용을 간단히 입력해주세요"
                         value={activityContent}
                         maxLength={MAX_LENGTH}
                         rows={4}
                         onChange={(e) => setActivityContent(e.target.value)}
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
                         className="w-full placeholder:text-custom-gray-800 focus:outline-none resize-none mb-2"
                     />
                     <p className={`text-sm font-medium text-right ${isValid ? 'text-custom-gray-700' : characterCount > 0 ? 'text-text-error' : 'text-custom-gray-700'}`}>
@@ -327,6 +366,11 @@ export default function SessionInfo({
                     </p>
                 </div>
             </div>
+            {!isValid && characterCount > 0 && (
+                <p className="absolute translate-y-1 text-sm font-medium text-error">
+                    {MIN_LENGTH}자 이상 입력해주세요
+                </p>
+            )}
 
             {/* 토스트 메시지 */}
             <Toast
