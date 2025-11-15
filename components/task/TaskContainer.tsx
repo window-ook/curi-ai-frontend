@@ -7,7 +7,7 @@ import { AdditionalImages } from '@/components/task/AdditionalImages';
 import { Category } from '@/components/task/Category';
 import { ContentTitle } from '@/components/task/ContentTitle';
 import { ActivityMethod } from '@/components/task/ActivityMethod';
-import { DetailedInfo } from '@/components/task/DetailedInfo';
+import { DetailedInformation } from '@/components/task/DetailedInformation';
 import { useCategoryStore } from '@/store/useCategoryStore';
 
 export default function TaskContainer() {
@@ -29,7 +29,7 @@ export default function TaskContainer() {
           <Category />
           <ContentTitle />
           <ActivityMethod />
-          <DetailedInfo />
+          <DetailedInformation />
         </div>
 
         {/* 모바일 화면 '다음으로' 버튼 */}

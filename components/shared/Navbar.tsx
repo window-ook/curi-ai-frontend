@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import Button from '@/components/shared/Button';
 import { useCategoryStore } from '@/store/useCategoryStore';
 
@@ -33,12 +32,9 @@ export const Navbar = () => {
               onClick={cancelSelection}
               className="absolute left-0 block md:hidden bg-white"
             >
-              <Image
-                src="/image/x.webp"
-                width={24}
-                height={24}
-                alt="카테고리 선택 취소"
-              />
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#121212" strokeWidth="2">
+                <path d="M19 5L5 19M5 5l14 14" />
+              </svg>
             </Button>
           </>
         )}
