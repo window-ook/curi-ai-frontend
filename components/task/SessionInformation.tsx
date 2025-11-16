@@ -52,7 +52,7 @@ export default function SessionInfo({
         return { hour: hour24 - 12, period: 'PM' };
     }, []);
 
-    // 시간 비교: 시작 <= 종료
+    // 시간 비교: 시작 <= 종료 검증
     const isTimeValid = useCallback((): boolean => {
         const startHour24 = convertTo24Hour(parseInt(startHour) || 0, startPeriod);
         const endHour24 = convertTo24Hour(parseInt(endHour) || 0, endPeriod);
@@ -84,14 +84,14 @@ export default function SessionInfo({
         form.setValue(`sessions.${index}.endMinute`, String(newEndMinute).padStart(2, '0'));
     }, [convertTo12Hour, form, index]);
 
-    // 시작 오전/오후 토글 핸들러
+    // 시작 오전/오후 토글
     const handleStartPeriodToggle = () => {
         const newPeriod = startPeriod === 'AM' ? 'PM' : 'AM';
         form.setValue(`sessions.${index}.startPeriod`, newPeriod);
         form.setValue(`sessions.${index}.endPeriod`, newPeriod);
     };
 
-    // 시작 시간 변경 핸들러
+    // 시작 시간 변경
     const handleStartHourChange = (value: string) => {
         if (value && !/^\d+$/.test(value)) return;
 
@@ -108,7 +108,7 @@ export default function SessionInfo({
         }
     };
 
-    // 시작 분 변경 핸들러
+    // 시작 분 변경
     const handleStartMinuteChange = (value: string) => {
         if (value && !/^\d+$/.test(value)) return;
 
@@ -124,7 +124,7 @@ export default function SessionInfo({
         }
     };
 
-    // 종료 시간 변경 핸들러
+    // 종료 시간 변경
     const handleEndHourChange = (value: string) => {
         if (value && !/^\d+$/.test(value)) return;
 
@@ -134,7 +134,7 @@ export default function SessionInfo({
         form.setValue(`sessions.${index}.endHour`, value);
     };
 
-    // 종료 분 변경 핸들러
+    // 종료 분 변경
     const handleEndMinuteChange = (value: string) => {
         if (value && !/^\d+$/.test(value)) return;
 
@@ -144,13 +144,13 @@ export default function SessionInfo({
         form.setValue(`sessions.${index}.endMinute`, value);
     };
 
-    // 종료 오전/오후 토글 핸들러
+    // 종료 오전/오후 토글
     const handleEndPeriodToggle = () => {
         const newPeriod = endPeriod === 'AM' ? 'PM' : 'AM';
         form.setValue(`sessions.${index}.endPeriod`, newPeriod);
     };
 
-    // 종료 시간 유효성 검증
+    // 종료 시간 검증
     useEffect(() => {
         // 모든 시간 입력이 완료되지 않았으면 검증하지 않음
         if (!startHour || !startMinute || !endHour || !endMinute) return;
@@ -182,7 +182,7 @@ export default function SessionInfo({
     };
 
     return (
-        <div className='pt-8 pb-12 px-5 rounded-lg bg-custom-gray-100 relative'>
+        <article className='relative pt-8 pb-12 px-5 rounded-lg bg-custom-gray-100'>
             {/* 삭제 버튼 */}
             {showDelete && (
                 <Button
@@ -191,26 +191,28 @@ export default function SessionInfo({
                     size="md"
                     onClick={onDelete}
                     className="absolute top-0 right-0 bg-custom-gray-100 hover:bg-custom-gray-100"
+                    ariaLabel="회차 삭제 버튼"
                 >
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#121212" strokeWidth="2">
                         <path d="M19 5L5 19M5 5l14 14" />
                     </svg>
                 </Button>
             )}
+
             {/* 회차 정보 */}
-            <div className="mb-6">
+            <section className="mb-6">
                 <h3 className="mb-4 text-2xl font-bold text-custom-black-900">
                     {sessionNumber ? `${sessionNumber}회차 정보` : '회차 정보'}
                 </h3>
 
                 {/* 날짜 선택 */}
-                <div className="mb-4 flex items-center gap-6 relative">
+                <div className="relative mb-4 flex items-center gap-6">
                     <label className="block text-lg text-custom-black-400 font-semibold whitespace-nowrap">날짜 선택</label>
-                    <div className="w-full relative">
+                    <div className="relative w-full">
                         <button
                             type="button"
                             onClick={() => setIsCalendarOpen(!isCalendarOpen)}
-                            className="w-full px-4 py-4 rounded-lg border border-custom-gray-200 bg-white font-medium text-center text-custom-black-900 hover:border-success-400 focus:outline-none focus:border-success-400 transition-colors cursor-pointer"
+                            className="w-full p-4 rounded-lg border border-custom-gray-200 hover:border-success-400 focus:border-success-400 bg-white font-medium text-center text-custom-black-900 focus:outline-none transition-colors cursor-pointer"
                         >
                             {selectedDate ? formatDate(selectedDate) : <span className='text-custom-gray-700'>날짜를 선택해주세요</span>}
                         </button>
@@ -247,12 +249,12 @@ export default function SessionInfo({
                     handleHourChange={handleEndHourChange}
                     handleMinuteChange={handleEndMinuteChange}
                 />
-            </div>
+            </section>
 
             {/* 활동 내용 */}
-            <div>
+            <section>
                 <h3 className="mb-2 text-2xl font-bold text-custom-black-900">활동 내용</h3>
-                <p className="mb-4 text-lg text-custom-gray-700 font-medium">날짜별 활동 내용을 간단히 적어주세요</p>
+                <p className="mb-4 text-lg font-medium text-custom-gray-700">날짜별 활동 내용을 간단히 적어주세요</p>
                 <Controller
                     name={`sessions.${index}.activityContent`}
                     control={form.control}
@@ -266,11 +268,11 @@ export default function SessionInfo({
                             rows={4}
                             error={fieldState.error?.message}
                             containerClassName="bg-white"
-                            textareaClassName="mb-2 placeholder:text-custom-gray-800 text-custom-black-900 resize-none"
+                            textareaClassName="mb-2 resize-none text-custom-black-900 placeholder:text-custom-gray-800"
                         />
                     )}
                 />
-            </div>
+            </section>
 
             {/* 토스트 메시지 */}
             <Toast
@@ -278,6 +280,6 @@ export default function SessionInfo({
                 isVisible={isToastVisible}
                 onClose={() => setIsToastVisible(false)}
             />
-        </div>
+        </article>
     );
 }

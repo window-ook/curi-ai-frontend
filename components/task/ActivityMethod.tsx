@@ -7,7 +7,7 @@ export const ActivityMethod = () => {
   const [selectedMethod, setSelectedMethod] = useState<'online' | 'offline'>('online');
 
   return (
-    <div className="w-full flex flex-col gap-4">
+    <section className="w-full flex flex-col gap-4">
       <h2 className="text-subtitle font-bold text-custom-black-900">활동 방식 선택</h2>
       <p className="text-xl text-custom-gray-700 font-medium">만남을 어떤 방식으로 진행하시겠어요?</p>
       <div className="flex gap-3">
@@ -17,6 +17,7 @@ export const ActivityMethod = () => {
           size='lg'
           fullWidth={true}
           onClick={() => setSelectedMethod('online')}
+          ariaLabel="온라인 선택"
         >
           온라인
         </Button>
@@ -26,10 +27,11 @@ export const ActivityMethod = () => {
           size='lg'
           fullWidth={true}
           onClick={() => setSelectedMethod('offline')}
+          ariaLabel="직접 만나기 선택"
         >
           직접 만나기
         </Button>
       </div>
-    </div>
+    </section>
   );
 };

@@ -12,7 +12,10 @@ export const Navbar = () => {
   const canProceed = selectedCategories.length > 0;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-custom-gray-300 bg-white">
+    <nav
+      role="navigation"
+      aria-label="네비게이션 바"
+      className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-custom-gray-300 bg-white">
       <div className="relative h-full max-w-desktop mx-auto px-5 flex items-center justify-between">
         {isSelecting && (
           <>
@@ -22,6 +25,7 @@ export const Navbar = () => {
               size="navbar"
               onClick={cancelSelection}
               className="hidden md:block absolute left-5 w-30"
+              ariaLabel="나가기 버튼(PC)"
             >
               나가기
             </Button>
@@ -31,6 +35,7 @@ export const Navbar = () => {
               size="navbar"
               onClick={cancelSelection}
               className="block md:hidden absolute left-0 bg-white"
+              ariaLabel="나가기 버튼(모바일)"
             >
               <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#121212" strokeWidth="2">
                 <path d="M19 5L5 19M5 5l14 14" />
@@ -49,10 +54,11 @@ export const Navbar = () => {
           disabledTextWhite={true}
           onClick={confirmSelection}
           className="hidden md:block absolute right-5 w-30"
+          ariaLabel="다음으로 버튼(PC)"
         >
           다음으로
         </Button>
       </div>
-    </header>
+    </nav>
   );
 };

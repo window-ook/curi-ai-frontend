@@ -38,8 +38,11 @@ export default function Toast({
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-28 md:bottom-8 left-0 right-0 z-50 px-4 animate-fade-in">
-      <div className="mx-auto w-full md:w-1/4 px-6 py-4 rounded-lg shadow-lg bg-custom-black-600 text-center text-white">
+    <div
+      role="alert"
+      aria-label="메세지 토스트"
+      className="fixed bottom-28 md:bottom-8 left-0 right-0 z-50 px-4 animate-fade-in">
+      <div className="w-full md:w-1/4 mx-auto px-6 py-4 rounded-lg shadow-lg bg-custom-black-600 text-center text-white">
         <p className="font-medium">{message}</p>
       </div>
     </div>

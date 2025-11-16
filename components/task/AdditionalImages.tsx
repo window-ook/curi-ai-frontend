@@ -14,7 +14,7 @@ export const AdditionalImages = () => {
   } = useMultipleImageUpload(4);
 
   return (
-    <div className="w-full flex flex-col gap-4">
+    <section className="w-full flex flex-col gap-4">
       <h2 className="text-subtitle font-bold text-custom-black-900">추가 이미지 (선택)</h2>
       <p className="text-xl text-custom-gray-800 font-medium">최대 4장까지 등록할 수 있어요</p>
 
@@ -30,7 +30,7 @@ export const AdditionalImages = () => {
       />
 
       <div className="flex md:grid md:grid-cols-2 gap-2 overflow-x-auto md:overflow-x-visible">
-        {/* 업로드된 이미지들 (8px 간격) */}
+        {/* 업로드된 이미지들, 8px 간격 (gap-2) */}
         {images.map((image, index) => (
           <button
             key={index}
@@ -48,13 +48,13 @@ export const AdditionalImages = () => {
           </button>
         ))}
 
-        {/* 빈 슬롯 */}
+        {/* 빈 슬롯: 업로드 이미지가 없는 상태 */}
         {!images.length && (
           <button
             type="button"
             onClick={handleSelectImage}
             disabled={!canAddMore}
-            className="w-40 md:w-full aspect-square rounded-lg border border-custom-gray-200 bg-custom-gray-100 flex items-center justify-center cursor-pointer hover:bg-custom-gray-200 transition-colors disabled:cursor-not-allowed disabled:hover:bg-custom-gray-100"
+            className="w-40 md:w-full aspect-square rounded-lg border border-custom-gray-200 bg-custom-gray-100 hover:bg-custom-gray-200 flex items-center justify-center cursor-pointer transition-colors disabled:cursor-not-allowed disabled:hover:bg-custom-gray-100"
             aria-label="이미지 추가"
           >
             <Image
@@ -67,6 +67,6 @@ export const AdditionalImages = () => {
           </button>
         )}
       </div>
-    </div>
+    </section>
   );
 };

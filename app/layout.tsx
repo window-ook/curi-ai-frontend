@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import React from 'react';
 import localFont from 'next/font/local';
 import "./globals.css";
 
@@ -21,9 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body
-        className={`${pretendard.variable} antialiased text-custom-black-900`}
-      >
+      <body className={`${pretendard.variable} antialiased text-custom-black-900`}>
         {children}
       </body>
     </html>

@@ -63,10 +63,10 @@ export const DetailedInformation = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-4">
+    <section className="w-full flex flex-col gap-4">
       <h2 className="text-subtitle font-bold text-custom-black-900">상세 정보</h2>
       {fields.map((field, index) => {
-        // 각 SessionInformation 렌더링 시점에 min/max 날짜 계산
+        // SessionInformation 렌더링 시점에 min/max 날짜 계산: 회차 날짜 순서 검증
         let minDate: Date | undefined = undefined;
         let maxDate: Date | undefined = undefined;
 
@@ -99,6 +99,7 @@ export const DetailedInformation = () => {
           />
         );
       })}
+
       <Button
         type="button"
         variant="black"
@@ -106,14 +107,16 @@ export const DetailedInformation = () => {
         fullWidth
         className='rounded-lg'
         onClick={handleAddSession}
+        ariaLabel="회차 추가하기 버튼"
       >
         회차 추가하기
       </Button>
+
       <DeleteSessionDialog
         isOpen={deleteDialogOpen}
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
       />
-    </div>
+    </section>
   );
 };

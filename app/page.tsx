@@ -3,11 +3,9 @@ import { Navbar } from '@/components/shared/Navbar';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
+    <main className="min-h-screen pt-16 bg-white">
       <Navbar />
-      <main className="pt-16">
-        <TaskContainer />
-      </main>
-    </div>
+      <TaskContainer />
+    </main>
   );
 }

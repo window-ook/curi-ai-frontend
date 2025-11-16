@@ -7,7 +7,7 @@ import { useCategoryStore } from '@/store/useCategoryStore';
 import { CATEGORIES, MAX_CATEGORY_COUNT } from '@/types/task/category';
 import type { ICategory } from '@/types/task/category';
 
-export default function CategorySelection() {
+export default function CategorySelector() {
   const isSelecting = useCategoryStore((state) => state.isSelecting);
   const selectedCategories = useCategoryStore((state) => state.selectedCategories);
   const addCategory = useCategoryStore((state) => state.addCategory);
@@ -32,7 +32,7 @@ export default function CategorySelection() {
 
   return (
     <>
-      <main className="mx-auto flex w-full max-w-desktop flex-col gap-4 px-4 py-8">
+      <section className="px-4 py-8 mx-auto w-full max-w-desktop flex flex-col gap-4">
         {/* 제목, 설명 */}
         <h1 className="text-subtitle font-bold">
           어떤 카테고리의
@@ -44,25 +44,28 @@ export default function CategorySelection() {
         </p>
 
         {/* 카테고리 그리드 */}
-        <article className="grid grid-cols-2 gap-4">
+        <ul className="grid grid-cols-2 gap-4">
           {CATEGORIES.map((category) => {
             const selected = isSelected(category.id);
 
             return (
-              <Button
-                type="button"
-                key={category.id}
-                onClick={() => handleCategoryClick(category)}
-                className={`rounded-lg border px-5 py-4 text-center font-medium transition-colors`}
-                variant={selected ? 'success-active' : 'outline'}
-                size="lg"
-                fullWidth={true}
-              >
-                {category.name}
-              </Button>
+              <li key={category.id}>
+                <Button
+                  key={category.id}
+                  type="button"
+                  onClick={() => handleCategoryClick(category)}
+                  className={`px-5 py-4 rounded-lg border text-center font-medium transition-colors`}
+                  variant={selected ? 'success-active' : 'outline'}
+                  size="lg"
+                  fullWidth={true}
+                  ariaLabel={`${category.name} 선택`}
+                >
+                  {category.name}
+                </Button>
+              </li>
             );
           })}
-        </article>
+        </ul>
 
         {/* 토스트 */}
         <Toast
@@ -70,10 +73,10 @@ export default function CategorySelection() {
           isVisible={showToast}
           onClose={() => setShowToast(false)}
         />
-      </main>
+      </section>
 
       <footer className="fixed md:hidden bottom-0 w-full border-t border-custom-gray-300 bg-white">
-        <div className="mx-auto max-w-desktop px-5 py-4">
+        <div className="px-5 py-4 mx-auto max-w-desktop">
           <Button
             type="button"
             variant={isSelecting && canProceed ? 'success' : 'black'}
@@ -83,6 +86,7 @@ export default function CategorySelection() {
             onClick={confirmSelection}
             className="block rounded-lg md:hidden"
             fullWidth={true}
+            ariaLabel="다음으로 버튼(모바일)"
           >
             다음으로
           </Button>

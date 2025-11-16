@@ -13,7 +13,7 @@ export const RepresentativeImage = () => {
   } = useImageUpload();
 
   return (
-    <div className="w-full">
+    <section className="w-full">
       <h2 className="mb-4 text-subtitle font-bold text-custom-black-900">대표 이미지</h2>
 
       {/* 파일 업로드 인풋 */}
@@ -26,7 +26,7 @@ export const RepresentativeImage = () => {
         aria-label="대표 이미지 파일 선택"
       />
 
-      {/* 이미지 미리보기 or 업로드 UI */}
+      {/* 이미지 미리보기 (이미지가 있는 경우) / 업로드 UI */}
       {image?.preview ? (
         <button
           type="button"
@@ -55,11 +55,13 @@ export const RepresentativeImage = () => {
             variant="black"
             onClick={handleSelectImage}
             size="lg"
-            className='w-40 rounded-lg'>
+            className='w-40 rounded-lg'
+            ariaLabel="대표 이미지 업로드 버튼"
+          >
             이미지 업로드
           </Button>
         </div>
       )}
-    </div>
+    </section>
   );
 };

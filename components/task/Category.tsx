@@ -11,7 +11,7 @@ export const Category = () => {
     : '주제를 선택해주세요';
 
   return (
-    <div className="w-full">
+    <section className="w-full">
       <h2 className="mb-4 text-subtitle font-bold text-custom-black-900">카테고리</h2>
       <div className="relative" onClick={openSelection}>
         <input
@@ -23,12 +23,12 @@ export const Category = () => {
         />
         <Image
           src="/image/chevron-right.webp"
-          alt="카테고리 주제 선택"
+          alt="카테고리 주제 선택 아이콘"
           width={24}
           height={24}
-          className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2"
+          className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
         />
       </div>
-    </div>
+    </section>
   );
 };

@@ -8,12 +8,14 @@ import { ButtonHTMLAttributes } from 'react';
  * @property size 버튼 크기 - navbar: Navbar용 작은 버튼, md: 중간, lg: 일반 큰 버튼
  * @property fullWidth - 전체 너비 사용 여부
  * @property disabledTextWhite - disabled 상태에서도 텍스트를 흰색으로 유지
+ * @property ariaLabel - 버튼의 역할 설명을 위한 aria-label 속성 값
  */
 export interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: 'black' | 'success' | 'outline' | 'success-active';
     size?: 'navbar' | 'md' | 'lg' | 'nopadding';
     fullWidth?: boolean;
     disabledTextWhite?: boolean;
+    ariaLabel: string;
 }
 
 export default function Button({
@@ -24,31 +26,33 @@ export default function Button({
     disabled = false,
     className = '',
     children,
+    ariaLabel,
     ...props
 }: IButton) {
-    const baseStyles = 'font-medium transition-colors cursor-pointer disabled:cursor-not-allowed disabled:bg-custom-gray-300 disabled:border-custom-gray-300';
+    const baseStyles = 'disabled:border-custom-gray-300 disabled:bg-custom-gray-300 font-medium transition-colors cursor-pointer disabled:cursor-not-allowed';
 
-    // '다음으로'는 disabled 상태에서도 텍스트를 흰색으로 유지
+    // '다음으로' 버튼은 disabled 상태에서도 텍스트가 흰색
     const disabledTextStyles = disabledTextWhite
         ? 'disabled:text-white'
         : 'disabled:text-custom-gray-700';
 
-    // 베리에이션별 스타일
+    // 버튼 종류
     const variantStyles = {
         black: disabled
             ? ''
-            : 'bg-custom-black-600 text-white hover:bg-custom-black-400 active:bg-custom-black-900',
+            : 'bg-custom-black-600 hover:bg-custom-black-400 active:bg-custom-black-900 text-white',
         success: disabled
             ? ''
-            : 'bg-success-400 text-white hover:bg-success-700 active:bg-success-500',
+            : 'bg-success-400 hover:bg-success-700 active:bg-success-500 text-white',
         outline: disabled
             ? 'border'
-            : 'bg-custom-gray-100 text-custom-black-900 border border-custom-gray-200 hover:bg-custom-gray-200 hover:border-custom-gray-600 active:bg-success-100 active:border-success-400',
+            : 'border border-custom-gray-200 active:border-success-400 hover:border-custom-gray-600 bg-custom-gray-100 hover:bg-custom-gray-200 active:bg-success-100 text-custom-black-900',
         'success-active': disabled
             ? 'border'
-            : 'bg-success-100 text-success-700 border border-success-400 hover:bg-success-200',
+            : 'border border-success-400 bg-success-100 hover:bg-success-200 text-success-700',
     };
 
+    // 버튼 사이즈
     const sizeStyles = {
         navbar: 'px-3 py-2 rounded text-base',
         md: 'px-4 py-3 rounded text-lg font-semibold',
@@ -63,6 +67,7 @@ export default function Button({
             disabled={disabled}
             className={`${baseStyles} ${disabledTextStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${widthStyles} ${className}`}
             {...props}
+            aria-label={ariaLabel}
         >
             {children}
         </button>

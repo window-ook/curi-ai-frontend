@@ -71,8 +71,8 @@ export default function ValidatedTextArea({
 
   return (
     <div
-      className='relative'
       ref={containerRef}
+      className='relative'
     >
       <div className={`p-4 rounded-lg border flex flex-col ${containerClassName} ${getBorderColor()}`}>
         <textarea
