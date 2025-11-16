@@ -1,6 +1,6 @@
 'use client';
 
-import ValidatedTextArea from '@/components/shared/ValidatedTextArea';
+import ValidatedTextArea from '@/components/ui/ValidatedTextArea';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { contentTitleSchema, IContentTitleForm } from '@/schema/contentTitle';

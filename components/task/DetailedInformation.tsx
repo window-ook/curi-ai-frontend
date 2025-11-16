@@ -1,8 +1,8 @@
 'use client';
 
-import Button from '@/components/shared/Button';
+import Button from '@/components/ui/Button';
 import SessionInformation from '@/components/task/SessionInformation';
-import DeleteSessionDialog from '@/components/task/DeleteSessionDialog';
+import DeleteSessionDialog from '@/components/ui/DeleteSessionDialog';
 import { useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';

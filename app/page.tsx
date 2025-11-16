@@ -1,5 +1,5 @@
 import TaskContainer from '@/components/task/TaskContainer';
-import { Navbar } from '@/components/shared/Navbar';
+import { Navbar } from '@/components/layout/Navbar';
 
 export default function Home() {
   return (

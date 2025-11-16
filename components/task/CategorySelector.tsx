@@ -1,7 +1,7 @@
 'use client';
 
-import Button from '@/components/shared/Button';
-import Toast from '@/components/shared/Toast';
+import Button from '@/components/ui/Button';
+import Toast from '@/components/ui/Toast';
 import { useState } from 'react';
 import { useCategoryStore } from '@/store/useCategoryStore';
 import { CATEGORIES, MAX_CATEGORY_COUNT } from '@/types/task/category';

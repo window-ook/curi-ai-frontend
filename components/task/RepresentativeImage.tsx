@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import Button from '@/components/shared/Button';
+import Button from '@/components/ui/Button';
 import { useImageUpload } from '@/hooks/useImageUpload';
 
 export const RepresentativeImage = () => {

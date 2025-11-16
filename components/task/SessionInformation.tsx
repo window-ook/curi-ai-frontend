@@ -1,13 +1,15 @@
 'use client';
 
-import Button from '@/components/shared/Button';
+import Button from '@/components/ui/Button';
 import Calendar from '@/components/task/Calendar';
-import Toast from '@/components/shared/Toast';
+import Toast from '@/components/ui/Toast';
 import TimeSelector from '@/components/task/TimeSelector';
-import ValidatedTextArea from '@/components/shared/ValidatedTextArea';
-import { useState, useEffect, useCallback } from 'react';
+import ValidatedTextArea from '@/components/ui/ValidatedTextArea';
+import { useState, useCallback } from 'react';
 import { Controller } from 'react-hook-form';
 import { ISessionInformation } from '@/types/task/detailedInformation';
+import { useSessionTime } from '@/hooks/useSessionTime';
+import { formatDate } from '@/utils/task/timeConverter';
 
 const MIN_LENGTH = 8;
 const MAX_LENGTH = 800;
@@ -33,148 +35,21 @@ export default function SessionInfo({
     const endHour = form.watch(`sessions.${index}.endHour`);
     const endMinute = form.watch(`sessions.${index}.endMinute`);
 
-    // 12시간 -> 24시간
-    const convertTo24Hour = useCallback((hour: number, period: 'AM' | 'PM'): number => {
-        if (period === 'AM') {
-            if (hour === 12) return 0;
-            return hour;
-        } else {
-            if (hour === 12) return 12;
-            return hour + 12;
-        }
-    }, []);
-
-    // 24시간 -> 12시간
-    const convertTo12Hour = useCallback((hour24: number): { hour: number; period: 'AM' | 'PM' } => {
-        if (hour24 === 0) return { hour: 12, period: 'AM' };
-        if (hour24 < 12) return { hour: hour24, period: 'AM' };
-        if (hour24 === 12) return { hour: 12, period: 'PM' };
-        return { hour: hour24 - 12, period: 'PM' };
-    }, []);
-
-    // 시간 비교: 시작 <= 종료 검증
-    const isTimeValid = useCallback((): boolean => {
-        const startHour24 = convertTo24Hour(parseInt(startHour) || 0, startPeriod);
-        const endHour24 = convertTo24Hour(parseInt(endHour) || 0, endPeriod);
-
-        const startMinutes = startHour24 * 60 + (parseInt(startMinute) || 0);
-        const endMinutes = endHour24 * 60 + (parseInt(endMinute) || 0);
-
-        return startMinutes < endMinutes;
-    }, [startHour, startPeriod, endHour, endPeriod, startMinute, endMinute, convertTo24Hour]);
-
     // 토스트 표시
     const showToast = useCallback((message: string) => {
         setToastMessage(message);
         setIsToastVisible(true);
     }, []);
 
-    // 종료 시간을 시작 시간 +1시간으로 자동 설정
-    const updateEndTime = useCallback((newStartHour24: number, newStartMinute: number) => {
-        let newEndHour24 = newStartHour24 + 1;
-        const newEndMinute = newStartMinute;
-
-        // 24시를 넘어가는 경우 처리
-        if (newEndHour24 >= 24) newEndHour24 = newEndHour24 - 24;
-
-        const { hour, period } = convertTo12Hour(newEndHour24);
-
-        form.setValue(`sessions.${index}.endPeriod`, period);
-        form.setValue(`sessions.${index}.endHour`, String(hour).padStart(2, '0'));
-        form.setValue(`sessions.${index}.endMinute`, String(newEndMinute).padStart(2, '0'));
-    }, [convertTo12Hour, form, index]);
-
-    // 시작 오전/오후 토글
-    const handleStartPeriodToggle = () => {
-        const newPeriod = startPeriod === 'AM' ? 'PM' : 'AM';
-        form.setValue(`sessions.${index}.startPeriod`, newPeriod);
-        form.setValue(`sessions.${index}.endPeriod`, newPeriod);
-    };
-
-    // 시작 시간 변경
-    const handleStartHourChange = (value: string) => {
-        if (value && !/^\d+$/.test(value)) return;
-
-        const numValue = parseInt(value);
-        if (value && (numValue < 1 || numValue > 12)) return;
-
-        form.setValue(`sessions.${index}.startHour`, value);
-
-        // 시작 시간 변경 시 종료 시간 자동 업데이트
-        if (value) {
-            const startHour24 = convertTo24Hour(numValue, startPeriod);
-            const startMin = parseInt(startMinute) || 0;
-            updateEndTime(startHour24, startMin);
-        }
-    };
-
-    // 시작 분 변경
-    const handleStartMinuteChange = (value: string) => {
-        if (value && !/^\d+$/.test(value)) return;
-
-        const numValue = parseInt(value);
-        if (value && (numValue < 0 || numValue > 59)) return;
-
-        form.setValue(`sessions.${index}.startMinute`, value);
-
-        // 시작 시간 변경 시 종료 시간 자동 업데이트
-        if (value && startHour) {
-            const startHour24 = convertTo24Hour(parseInt(startHour), startPeriod);
-            updateEndTime(startHour24, numValue);
-        }
-    };
-
-    // 종료 시간 변경
-    const handleEndHourChange = (value: string) => {
-        if (value && !/^\d+$/.test(value)) return;
-
-        const numValue = parseInt(value);
-        if (value && (numValue < 1 || numValue > 12)) return;
-
-        form.setValue(`sessions.${index}.endHour`, value);
-    };
-
-    // 종료 분 변경
-    const handleEndMinuteChange = (value: string) => {
-        if (value && !/^\d+$/.test(value)) return;
-
-        const numValue = parseInt(value);
-        if (value && (numValue < 0 || numValue > 59)) return;
-
-        form.setValue(`sessions.${index}.endMinute`, value);
-    };
-
-    // 종료 오전/오후 토글
-    const handleEndPeriodToggle = () => {
-        const newPeriod = endPeriod === 'AM' ? 'PM' : 'AM';
-        form.setValue(`sessions.${index}.endPeriod`, newPeriod);
-    };
-
-    // 종료 시간 검증
-    useEffect(() => {
-        // 모든 시간 입력이 완료되지 않았으면 검증하지 않음
-        if (!startHour || !startMinute || !endHour || !endMinute) return;
-
-        // 시간 유효성 검증
-        if (!isTimeValid()) {
-            // 다음 렌더 사이클에서 상태 업데이트
-            setTimeout(() => {
-                showToast('종료시간은 시작 시간보다 빠를 수 없습니다.');
-
-                // 시작 시간 변경 시 종료 시간 자동 업데이트
-                const startHour24 = convertTo24Hour(parseInt(startHour), startPeriod);
-                const startMin = parseInt(startMinute);
-                updateEndTime(startHour24, startMin);
-            }, 0);
-        }
-    }, [endHour, endMinute, endPeriod, startHour, startMinute, startPeriod, isTimeValid, showToast, convertTo24Hour, updateEndTime]);
-
-    const formatDate = (date: Date) => {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}년 ${month}월 ${day}일`;
-    };
+    // 시간 관련 로직을 커스텀 훅으로 분리
+    const {
+        handleStartPeriodToggle,
+        handleStartHourChange,
+        handleStartMinuteChange,
+        handleEndPeriodToggle,
+        handleEndHourChange,
+        handleEndMinuteChange,
+    } = useSessionTime({ form, index, onTimeError: showToast });
 
     const handleDateSelect = (date: Date) => {
         form.setValue(`sessions.${index}.date`, date);

@@ -1,6 +1,6 @@
 'use client';
 
-import Button from '@/components/shared/Button';
+import Button from '@/components/ui/Button';
 import { useState } from 'react';
 
 /**

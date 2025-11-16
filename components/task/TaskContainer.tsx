@@ -1,7 +1,7 @@
 'use client';
 
 import CategorySelector from '@/components/task/CategorySelector';
-import Button from '@/components/shared/Button';
+import Button from '@/components/ui/Button';
 import { RepresentativeImage } from '@/components/task/RepresentativeImage';
 import { AdditionalImages } from '@/components/task/AdditionalImages';
 import { Category } from '@/components/task/Category';
