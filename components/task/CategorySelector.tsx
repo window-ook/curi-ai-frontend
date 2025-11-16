@@ -34,7 +34,7 @@ export default function CategorySelector() {
     <>
       <section className="px-4 py-8 mx-auto w-full max-w-desktop flex flex-col gap-4">
         {/* 제목, 설명 */}
-        <h1 className="text-subtitle font-bold">
+        <h1 className="text-subtitle font-bold text-custom-black-900">
           어떤 카테고리의
           <br />
           콘텐츠를 만드시나요?

@@ -1,6 +1,6 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { UseFormReturn } from 'react-hook-form';
-import { convertTo24Hour, convertTo12Hour, isTimeValid, calculateEndTime } from '@/utils/task/timeConverter';
+import { convertTo24Hour, isTimeValid, calculateEndTime } from '@/utils/task/timeConverter';
 
 export interface ISessionFormData {
   sessions: Array<{
@@ -103,8 +103,18 @@ export const useSessionTime = ({ form, index, onTimeError }: IUseSessionTime) =>
       if (value && (numValue < 1 || numValue > 12)) return;
 
       form.setValue(`sessions.${index}.endHour`, value);
+
+      // 종료 시간 입력 완료 후 유효성 검증
+      if (value && startHour && startMinute && endMinute) {
+        const startHourNum = parseInt(startHour);
+        const startMinuteNum = parseInt(startMinute);
+        const endMinuteNum = parseInt(endMinute);
+
+        if (!isTimeValid(startHourNum, startMinuteNum, startPeriod, numValue, endMinuteNum, endPeriod))
+          onTimeError('종료시간은 시작 시간보다 빠를 수 없습니다.');
+      }
     },
-    [form, index]
+    [form, index, startHour, startMinute, startPeriod, endMinute, endPeriod, onTimeError]
   );
 
   // 종료 분 변경
@@ -116,38 +126,36 @@ export const useSessionTime = ({ form, index, onTimeError }: IUseSessionTime) =>
       if (value && (numValue < 0 || numValue > 59)) return;
 
       form.setValue(`sessions.${index}.endMinute`, value);
+
+      // 종료 분 입력 완료 후 유효성 검증
+      if (value && startHour && startMinute && endHour) {
+        const startHourNum = parseInt(startHour);
+        const startMinuteNum = parseInt(startMinute);
+        const endHourNum = parseInt(endHour);
+
+        if (!isTimeValid(startHourNum, startMinuteNum, startPeriod, endHourNum, numValue, endPeriod))
+          onTimeError('종료시간은 시작 시간보다 빠를 수 없습니다.');
+      }
     },
-    [form, index]
+    [form, index, startHour, startMinute, startPeriod, endHour, endPeriod, onTimeError]
   );
 
   // 종료 오전/오후 토글
   const handleEndPeriodToggle = useCallback(() => {
     const newPeriod = endPeriod === 'AM' ? 'PM' : 'AM';
     form.setValue(`sessions.${index}.endPeriod`, newPeriod);
-  }, [form, index, endPeriod]);
 
-  // 종료 시간 검증
-  useEffect(() => {
-    // 모든 시간 입력이 완료되지 않았으면 검증하지 않음
-    if (!startHour || !startMinute || !endHour || !endMinute) return;
+    // 토글 후 유효성 검증
+    if (startHour && startMinute && endHour && endMinute) {
+      const startHourNum = parseInt(startHour);
+      const startMinuteNum = parseInt(startMinute);
+      const endHourNum = parseInt(endHour);
+      const endMinuteNum = parseInt(endMinute);
 
-    const startHourNum = parseInt(startHour);
-    const startMinuteNum = parseInt(startMinute);
-    const endHourNum = parseInt(endHour);
-    const endMinuteNum = parseInt(endMinute);
-
-    // 시간 유효성 검증
-    if (!isTimeValid(startHourNum, startMinuteNum, startPeriod, endHourNum, endMinuteNum, endPeriod)) {
-      // 다음 렌더 사이클에서 상태 업데이트
-      setTimeout(() => {
+      if (!isTimeValid(startHourNum, startMinuteNum, startPeriod, endHourNum, endMinuteNum, newPeriod))
         onTimeError('종료시간은 시작 시간보다 빠를 수 없습니다.');
-
-        // 시작 시간 기준으로 종료 시간 자동 업데이트
-        const startHour24 = convertTo24Hour(startHourNum, startPeriod);
-        updateEndTime(startHour24, startMinuteNum);
-      }, 0);
     }
-  }, [endHour, endMinute, endPeriod, startHour, startMinute, startPeriod, onTimeError, updateEndTime]);
+  }, [form, index, endPeriod, startHour, startMinute, startPeriod, endHour, endMinute, onTimeError]);
 
   return {
     handleStartPeriodToggle,
