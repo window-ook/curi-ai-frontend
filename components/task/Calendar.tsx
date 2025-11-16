@@ -95,7 +95,7 @@ export default function Calendar({ selectedDate, onDateSelect, onClose, minDate,
   const calendarDays = getCalendarDays();
 
   return (
-    <div className="absolute top-full left-0 mt-2 z-50 w-full min-w-[320px] max-w-[600px] p-8 rounded-2xl bg-white shadow-2xl border border-custom-gray-200">
+    <div className="absolute top-full left-0 mt-2 z-50 w-full min-w-[320px] max-w-[600px] max-[484px]:-left-1/3 max-[484px]:translate-x-0.5 p-8 rounded-2xl bg-white shadow-2xl border border-custom-gray-200">
       {/* 연도/월, 이동 버튼 */}
       <div className="mb-6 flex items-center justify-between">
         <h3 className="text-base font-bold text-custom-black-400">

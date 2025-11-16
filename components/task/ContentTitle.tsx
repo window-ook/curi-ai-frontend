@@ -18,7 +18,7 @@ export const ContentTitle = () => {
 
   return (
     <div>
-      <h2 className="mb-4 text-subtitle font-bold">콘텐츠 제목</h2>
+      <h2 className="mb-4 text-subtitle font-bold text-custom-black-900">콘텐츠 제목</h2>
       <Controller
         name="title"
         control={form.control}
@@ -31,7 +31,7 @@ export const ContentTitle = () => {
             maxLength={MAX_LENGTH}
             error={fieldState.error?.message}
             containerClassName="h-36 justify-between"
-            textareaClassName="h-20 font-medium placeholder:text-custom-gray-700"
+            textareaClassName="h-20 font-medium placeholder:text-custom-gray-700 text-custom-black-900"
           />
         )}
       />

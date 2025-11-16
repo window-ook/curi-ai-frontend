@@ -38,7 +38,7 @@ export const Navbar = () => {
             </Button>
           </>
         )}
-        <h1 className="flex-1 text-center text-2xl font-bold">
+        <h1 className="flex-1 text-center text-2xl font-bold text-custom-black-900">
           {isSelecting ? '카테고리' : '과제'}
         </h1>
         <Button

@@ -45,7 +45,7 @@ export const ValidatedTextArea = ({
 
     if (!isMobile) return;
 
-    setTimeout(() => { textareaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }) }, 300);
+    setTimeout(() => { textareaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300);
   };
 
   const handleBlur = () => setIsFocused(false);
@@ -86,7 +86,7 @@ export const ValidatedTextArea = ({
           rows={rows}
           className={`w-full focus:outline-none ${textareaClassName}`}
         />
-        <p className={`text-sm font-medium text-right ${hasError ? 'text-text-error' : 'text-custom-gray-700'}`}>
+        <p className={`text-sm font-medium text-right ${hasError ? 'text-error' : 'text-custom-gray-700'}`}>
           {characterCount} / {maxLength}자 (최소 {minLength}자)
         </p>
       </div>

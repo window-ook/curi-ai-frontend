@@ -14,7 +14,7 @@ export const RepresentativeImage = () => {
 
   return (
     <div className="w-full">
-      <h2 className="mb-4 text-subtitle font-bold">대표 이미지</h2>
+      <h2 className="mb-4 text-subtitle font-bold text-custom-black-900">대표 이미지</h2>
 
       {/* 파일 업로드 인풋 */}
       <input
@@ -44,7 +44,7 @@ export const RepresentativeImage = () => {
         </button>
       ) : (
         <div className="relative w-full aspect-square p-8 rounded-lg bg-custom-gray-100 border border-custom-gray-200 flex flex-col items-center justify-center gap-4">
-          <p className="text-subtitle font-bold text-center">
+          <p className="text-subtitle font-bold text-center text-custom-black-900">
             콘텐츠 대표 이미지를 등록해 주세요!
           </p>
           <p className="text-subtitle-small text-custom-gray-700 font-medium text-center">

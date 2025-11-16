@@ -15,7 +15,7 @@ export const AdditionalImages = () => {
 
   return (
     <div className="w-full flex flex-col gap-4">
-      <h2 className="text-subtitle font-bold">추가 이미지 (선택)</h2>
+      <h2 className="text-subtitle font-bold text-custom-black-900">추가 이미지 (선택)</h2>
       <p className="text-xl text-custom-gray-800 font-medium">최대 4장까지 등록할 수 있어요</p>
 
       {/* 파일 업로드 인풋 */}

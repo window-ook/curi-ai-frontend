@@ -12,14 +12,14 @@ export const Category = () => {
 
   return (
     <div className="w-full">
-      <h2 className="mb-4 text-subtitle font-bold">카테고리</h2>
+      <h2 className="mb-4 text-subtitle font-bold text-custom-black-900">카테고리</h2>
       <div className="relative" onClick={openSelection}>
         <input
           type="text"
           value={displayText}
           readOnly
           placeholder="주제를 선택해주세요"
-          className="w-full cursor-pointer rounded-lg border border-custom-gray-200 bg-white px-4 py-4 placeholder:text-custom-gray-700"
+          className="w-full px-4 py-4 rounded-lg border border-custom-gray-200 bg-white placeholder:text-custom-gray-700 text-custom-black-900 cursor-pointer"
         />
         <Image
           src="/image/chevron-right.webp"

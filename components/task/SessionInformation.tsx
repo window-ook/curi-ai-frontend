@@ -198,7 +198,7 @@ export default function SessionInfo({
             )}
             {/* 회차 정보 */}
             <div className="mb-6">
-                <h3 className="mb-4 text-2xl font-bold">
+                <h3 className="mb-4 text-2xl font-bold text-custom-black-900">
                     {sessionNumber ? `${sessionNumber}회차 정보` : '회차 정보'}
                 </h3>
 
@@ -209,7 +209,7 @@ export default function SessionInfo({
                         <button
                             type="button"
                             onClick={() => setIsCalendarOpen(!isCalendarOpen)}
-                            className="w-full px-4 py-4 rounded-lg border border-custom-gray-200 bg-white font-medium text-center hover:border-success-400 focus:outline-none focus:border-success-400 transition-colors cursor-pointer"
+                            className="w-full px-4 py-4 rounded-lg border border-custom-gray-200 bg-white font-medium text-center text-custom-black-900 hover:border-success-400 focus:outline-none focus:border-success-400 transition-colors cursor-pointer"
                         >
                             {selectedDate ? formatDate(selectedDate) : <span className='text-custom-gray-700'>날짜를 선택해주세요</span>}
                         </button>
@@ -243,7 +243,7 @@ export default function SessionInfo({
                                 type="text"
                                 value={startHour}
                                 onChange={(e) => handleStartHourChange(e.target.value)}
-                                className="w-16 min-[768px]:max-[840px]:w-12 px-2 min-[768px]:max-[840px]:px-1 py-2 bg-white text-center text-xl min-[768px]:max-[840px]:text-lg font-medium focus:outline-none"
+                                className="w-16 min-[768px]:max-[840px]:w-12 px-2 min-[768px]:max-[840px]:px-1 py-2 bg-white text-center text-xl min-[768px]:max-[840px]:text-lg font-medium text-custom-black-900 focus:outline-none"
                                 maxLength={2}
                             />
                             <span className="text-xl min-[768px]:max-[840px]:text-lg font-medium text-">:</span>
@@ -251,7 +251,7 @@ export default function SessionInfo({
                                 type="text"
                                 value={startMinute}
                                 onChange={(e) => handleStartMinuteChange(e.target.value)}
-                                className="w-16 min-[768px]:max-[840px]:w-12 px-2 min-[768px]:max-[840px]:px-1 py-2 bg-white text-center text-xl min-[768px]:max-[840px]:text-lg font-medium focus:outline-none"
+                                className="w-16 min-[768px]:max-[840px]:w-12 px-2 min-[768px]:max-[840px]:px-1 py-2 bg-white text-center text-xl min-[768px]:max-[840px]:text-lg font-medium text-custom-black-900 focus:outline-none"
                                 maxLength={2}
                             />
                         </div>
@@ -276,7 +276,7 @@ export default function SessionInfo({
                                 type="text"
                                 value={endHour}
                                 onChange={(e) => handleEndHourChange(e.target.value)}
-                                className="w-16 min-[768px]:max-[840px]:w-12 px-2 min-[768px]:max-[840px]:px-1 py-2 bg-white text-center text-xl min-[768px]:max-[840px]:text-lg font-medium focus:outline-none"
+                                className="w-16 min-[768px]:max-[840px]:w-12 px-2 min-[768px]:max-[840px]:px-1 py-2 bg-white text-center text-xl min-[768px]:max-[840px]:text-lg font-medium text-custom-black-900 focus:outline-none"
                                 maxLength={2}
                             />
                             <span className="text-xl min-[768px]:max-[840px]:text-lg font-medium text-">:</span>
@@ -284,7 +284,7 @@ export default function SessionInfo({
                                 type="text"
                                 value={endMinute}
                                 onChange={(e) => handleEndMinuteChange(e.target.value)}
-                                className="w-16 min-[768px]:max-[840px]:w-12 px-2 min-[768px]:max-[840px]:px-1 py-2 bg-white text-center text-xl min-[768px]:max-[840px]:text-lg font-medium focus:outline-none"
+                                className="w-16 min-[768px]:max-[840px]:w-12 px-2 min-[768px]:max-[840px]:px-1 py-2 bg-white text-center text-xl min-[768px]:max-[840px]:text-lg font-medium text-custom-black-900 focus:outline-none"
                                 maxLength={2}
                             />
                         </div>
@@ -294,7 +294,7 @@ export default function SessionInfo({
 
             {/* 활동 내용 */}
             <div>
-                <h3 className="mb-2 text-2xl font-bold ">활동 내용</h3>
+                <h3 className="mb-2 text-2xl font-bold text-custom-black-900">활동 내용</h3>
                 <p className="mb-4 text-lg text-custom-gray-700 font-medium">날짜별 활동 내용을 간단히 적어주세요</p>
                 <Controller
                     name={`sessions.${index}.activityContent`}
@@ -309,7 +309,7 @@ export default function SessionInfo({
                             rows={4}
                             error={fieldState.error?.message}
                             containerClassName="bg-white"
-                            textareaClassName="placeholder:text-custom-gray-800 resize-none mb-2"
+                            textareaClassName="mb-2 placeholder:text-custom-gray-800 text-custom-black-900 resize-none"
                         />
                     )}
                 />

@@ -64,7 +64,7 @@ export const DetailedInformation = () => {
 
   return (
     <div className="w-full flex flex-col gap-4">
-      <h2 className="text-subtitle font-bold">상세 정보</h2>
+      <h2 className="text-subtitle font-bold text-custom-black-900">상세 정보</h2>
       {fields.map((field, index) => {
         // 각 SessionInformation 렌더링 시점에 min/max 날짜 계산
         let minDate: Date | undefined = undefined;
