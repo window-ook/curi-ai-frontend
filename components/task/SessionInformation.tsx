@@ -3,49 +3,36 @@
 import Button from '@/components/shared/Button';
 import Calendar from '@/components/task/Calendar';
 import Toast from '@/components/shared/Toast';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { ValidatedTextArea } from '@/components/shared/ValidatedTextArea';
+import { useState, useEffect, useCallback } from 'react';
+import { Controller } from 'react-hook-form';
+import { ISessionInformation } from '@/types/task/detailedInformation';
 
 const MIN_LENGTH = 8;
 const MAX_LENGTH = 800;
-
-export interface ISessionInfo {
-    sessionNumber?: number;
-    showDelete?: boolean;
-    onDelete?: () => void;
-    selectedDate: Date | null;
-    onDateChange: (date: Date | null) => void;
-    minDate?: Date;
-    maxDate?: Date;
-}
 
 export default function SessionInfo({
     sessionNumber,
     showDelete = false,
     onDelete,
-    selectedDate,
-    onDateChange,
+    form,
+    index,
     minDate,
     maxDate
-}: ISessionInfo) {
+}: ISessionInformation) {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-    const [startPeriod, setStartPeriod] = useState<'AM' | 'PM'>('AM');
-    const [startHour, setStartHour] = useState('10');
-    const [startMinute, setStartMinute] = useState('00');
-    const [endPeriod, setEndPeriod] = useState<'AM' | 'PM'>('AM');
-    const [endHour, setEndHour] = useState('11');
-    const [endMinute, setEndMinute] = useState('00');
-    const [activityContent, setActivityContent] = useState('');
     const [toastMessage, setToastMessage] = useState('');
     const [isToastVisible, setIsToastVisible] = useState(false);
-    const [isFocused, setIsFocused] = useState(false);
 
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
+    const selectedDate = form.watch(`sessions.${index}.date`);
+    const startPeriod = form.watch(`sessions.${index}.startPeriod`);
+    const startHour = form.watch(`sessions.${index}.startHour`);
+    const startMinute = form.watch(`sessions.${index}.startMinute`);
+    const endPeriod = form.watch(`sessions.${index}.endPeriod`);
+    const endHour = form.watch(`sessions.${index}.endHour`);
+    const endMinute = form.watch(`sessions.${index}.endMinute`);
 
-    const characterCount = activityContent.length;
-    const isValid = characterCount >= MIN_LENGTH && characterCount <= MAX_LENGTH;
-
-    // 12시간제를 24시간제로 변환
+    // 12시간 -> 24시간
     const convertTo24Hour = useCallback((hour: number, period: 'AM' | 'PM'): number => {
         if (period === 'AM') {
             if (hour === 12) return 0;
@@ -56,7 +43,7 @@ export default function SessionInfo({
         }
     }, []);
 
-    // 24시간제를 12시간제로 변환
+    // 24시간 -> 12시간
     const convertTo12Hour = useCallback((hour24: number): { hour: number; period: 'AM' | 'PM' } => {
         if (hour24 === 0) return { hour: 12, period: 'AM' };
         if (hour24 < 12) return { hour: hour24, period: 'AM' };
@@ -64,7 +51,7 @@ export default function SessionInfo({
         return { hour: hour24 - 12, period: 'PM' };
     }, []);
 
-    // 시간 비교 (시작 <= 종료 검증)
+    // 시간 비교: 시작 <= 종료
     const isTimeValid = useCallback((): boolean => {
         const startHour24 = convertTo24Hour(parseInt(startHour) || 0, startPeriod);
         const endHour24 = convertTo24Hour(parseInt(endHour) || 0, endPeriod);
@@ -81,21 +68,6 @@ export default function SessionInfo({
         setIsToastVisible(true);
     }, []);
 
-    // 모바일 스크롤 처리
-    const handleFocus = () => {
-        setIsFocused(true);
-
-        if (!textareaRef.current) return;
-
-        const isMobile = window.innerWidth < 768;
-
-        if (!isMobile) return;
-
-        setTimeout(() => { textareaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }) }, 300);
-    };
-
-    const handleBlur = () => setIsFocused(false);
-
     // 종료 시간을 시작 시간 +1시간으로 자동 설정
     const updateEndTime = useCallback((newStartHour24: number, newStartMinute: number) => {
         let newEndHour24 = newStartHour24 + 1;
@@ -105,30 +77,29 @@ export default function SessionInfo({
         if (newEndHour24 >= 24) newEndHour24 = newEndHour24 - 24;
 
         const { hour, period } = convertTo12Hour(newEndHour24);
-        setEndPeriod(period);
-        setEndHour(String(hour).padStart(2, '0'));
-        setEndMinute(String(newEndMinute).padStart(2, '0'));
-    }, [convertTo12Hour]);
+
+        form.setValue(`sessions.${index}.endPeriod`, period);
+        form.setValue(`sessions.${index}.endHour`, String(hour).padStart(2, '0'));
+        form.setValue(`sessions.${index}.endMinute`, String(newEndMinute).padStart(2, '0'));
+    }, [convertTo12Hour, form, index]);
 
     // 시작 오전/오후 토글 핸들러
     const handleStartPeriodToggle = () => {
         const newPeriod = startPeriod === 'AM' ? 'PM' : 'AM';
-        setStartPeriod(newPeriod);
-        setEndPeriod(newPeriod);
+        form.setValue(`sessions.${index}.startPeriod`, newPeriod);
+        form.setValue(`sessions.${index}.endPeriod`, newPeriod);
     };
 
     // 시작 시간 변경 핸들러
     const handleStartHourChange = (value: string) => {
-        // 숫자만 입력 가능
         if (value && !/^\d+$/.test(value)) return;
 
-        // 1~12 범위만 허용
         const numValue = parseInt(value);
         if (value && (numValue < 1 || numValue > 12)) return;
 
-        setStartHour(value);
+        form.setValue(`sessions.${index}.startHour`, value);
 
-        // 시작 시간 변경 시 종료 시간 자동 업데이트 (+1시간)
+        // 시작 시간 변경 시 종료 시간 자동 업데이트
         if (value) {
             const startHour24 = convertTo24Hour(numValue, startPeriod);
             const startMin = parseInt(startMinute) || 0;
@@ -138,16 +109,14 @@ export default function SessionInfo({
 
     // 시작 분 변경 핸들러
     const handleStartMinuteChange = (value: string) => {
-        // 숫자만 입력 가능
         if (value && !/^\d+$/.test(value)) return;
 
-        // 0~59 범위만 허용
         const numValue = parseInt(value);
         if (value && (numValue < 0 || numValue > 59)) return;
 
-        setStartMinute(value);
+        form.setValue(`sessions.${index}.startMinute`, value);
 
-        // 시작 분 변경 시 종료 시간 자동 업데이트 (+1시간)
+        // 시작 시간 변경 시 종료 시간 자동 업데이트
         if (value && startHour) {
             const startHour24 = convertTo24Hour(parseInt(startHour), startPeriod);
             updateEndTime(startHour24, numValue);
@@ -156,62 +125,48 @@ export default function SessionInfo({
 
     // 종료 시간 변경 핸들러
     const handleEndHourChange = (value: string) => {
-        // 숫자만 입력 가능
         if (value && !/^\d+$/.test(value)) return;
 
-        // 1~12 범위만 허용
         const numValue = parseInt(value);
         if (value && (numValue < 1 || numValue > 12)) return;
 
-        setEndHour(value);
+        form.setValue(`sessions.${index}.endHour`, value);
     };
 
     // 종료 분 변경 핸들러
     const handleEndMinuteChange = (value: string) => {
-        // 숫자만 입력 가능
         if (value && !/^\d+$/.test(value)) return;
 
-        // 0~59 범위만 허용
         const numValue = parseInt(value);
         if (value && (numValue < 0 || numValue > 59)) return;
 
-        setEndMinute(value);
+        form.setValue(`sessions.${index}.endMinute`, value);
     };
 
     // 종료 오전/오후 토글 핸들러
     const handleEndPeriodToggle = () => {
         const newPeriod = endPeriod === 'AM' ? 'PM' : 'AM';
-        setEndPeriod(newPeriod);
+        form.setValue(`sessions.${index}.endPeriod`, newPeriod);
     };
 
-    // 종료 시간 유효성 검증 (useEffect)
+    // 종료 시간 유효성 검증
     useEffect(() => {
         // 모든 시간 입력이 완료되지 않았으면 검증하지 않음
         if (!startHour || !startMinute || !endHour || !endMinute) return;
 
         // 시간 유효성 검증
         if (!isTimeValid()) {
-            // setTimeout을 사용하여 다음 렌더 사이클에서 상태 업데이트
+            // 다음 렌더 사이클에서 상태 업데이트
             setTimeout(() => {
                 showToast('종료시간은 시작 시간보다 빠를 수 없습니다.');
 
-                // 종료 시간을 시작 시간 +1시간으로 자동 수정
+                // 시작 시간 변경 시 종료 시간 자동 업데이트
                 const startHour24 = convertTo24Hour(parseInt(startHour), startPeriod);
                 const startMin = parseInt(startMinute);
                 updateEndTime(startHour24, startMin);
             }, 0);
         }
     }, [endHour, endMinute, endPeriod, startHour, startMinute, startPeriod, isTimeValid, showToast, convertTo24Hour, updateEndTime]);
-
-    // 빈 영역 클릭시 포커스 해제
-    useEffect(() => {
-        const handleClickEmptyArea = (event: MouseEvent) => {
-            if (containerRef.current && !containerRef.current.contains(event.target as Node) && textareaRef.current) textareaRef.current.blur();
-        };
-
-        document.addEventListener('mousedown', handleClickEmptyArea);
-        return () => document.removeEventListener('mousedown', handleClickEmptyArea);
-    }, []);
 
     const formatDate = (date: Date) => {
         const year = date.getFullYear();
@@ -221,7 +176,7 @@ export default function SessionInfo({
     };
 
     const handleDateSelect = (date: Date) => {
-        onDateChange(date);
+        form.setValue(`sessions.${index}.date`, date);
         setIsCalendarOpen(false);
     };
 
@@ -338,39 +293,27 @@ export default function SessionInfo({
             </div>
 
             {/* 활동 내용 */}
-            <div ref={containerRef}>
+            <div>
                 <h3 className="mb-2 text-2xl font-bold ">활동 내용</h3>
                 <p className="mb-4 text-lg text-custom-gray-700 font-medium">날짜별 활동 내용을 간단히 적어주세요</p>
-                <div className={`p-4 rounded-lg border bg-white flex flex-col
-                    ${isFocused
-                        ? isValid
-                            ? 'border-success-400'
-                            : characterCount > 0
-                                ? 'border-error'
-                                : 'border-custom-gray-200'
-                        : 'border-custom-gray-200'
-                    }`}>
-                    <textarea
-                        ref={textareaRef}
-                        placeholder="활동 내용을 간단히 입력해주세요"
-                        value={activityContent}
-                        maxLength={MAX_LENGTH}
-                        rows={4}
-                        onChange={(e) => setActivityContent(e.target.value)}
-                        onFocus={handleFocus}
-                        onBlur={handleBlur}
-                        className="w-full placeholder:text-custom-gray-800 focus:outline-none resize-none mb-2"
-                    />
-                    <p className={`text-sm font-medium text-right ${isValid ? 'text-custom-gray-700' : characterCount > 0 ? 'text-text-error' : 'text-custom-gray-700'}`}>
-                        {characterCount} / {MAX_LENGTH}자 (최소 {MIN_LENGTH}자)
-                    </p>
-                </div>
+                <Controller
+                    name={`sessions.${index}.activityContent`}
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <ValidatedTextArea
+                            value={field.value}
+                            onChange={field.onChange}
+                            placeholder="활동 내용을 간단히 입력해주세요"
+                            minLength={MIN_LENGTH}
+                            maxLength={MAX_LENGTH}
+                            rows={4}
+                            error={fieldState.error?.message}
+                            containerClassName="bg-white"
+                            textareaClassName="placeholder:text-custom-gray-800 resize-none mb-2"
+                        />
+                    )}
+                />
             </div>
-            {!isValid && characterCount > 0 && (
-                <p className="absolute translate-y-1 text-sm font-medium text-error">
-                    {MIN_LENGTH}자 이상 입력해주세요
-                </p>
-            )}
 
             {/* 토스트 메시지 */}
             <Toast
