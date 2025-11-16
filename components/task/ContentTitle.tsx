@@ -1,9 +1,9 @@
 'use client';
 
+import ValidatedTextArea from '@/components/shared/ValidatedTextArea';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { contentTitleSchema, IContentTitleForm } from '@/schema/contentTitle';
-import { ValidatedTextArea } from '@/components/shared/ValidatedTextArea';
 
 const MIN_LENGTH = 8;
 const MAX_LENGTH = 80;

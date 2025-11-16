@@ -15,7 +15,7 @@ import { IValidatedTextarea } from '@/types/shared/validatedTextarea';
  * @param containerClassName - 컨테이너 추가 클래스
  * @param textareaClassName - 텍스트 영역 추가 클래스
  */
-export const ValidatedTextArea = ({
+export default function ValidatedTextArea({
   value,
   onChange,
   placeholder,
@@ -25,7 +25,7 @@ export const ValidatedTextArea = ({
   error,
   containerClassName = '',
   textareaClassName = ''
-}: IValidatedTextarea) => {
+}: IValidatedTextarea) {
   const [isFocused, setIsFocused] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);

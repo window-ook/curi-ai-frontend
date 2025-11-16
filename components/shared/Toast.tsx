@@ -31,7 +31,7 @@ export default function Toast({
 }: IToast) {
   useEffect(() => {
     if (!isVisible) return;
-    const timer = setTimeout(() => { onClose() }, duration);
+    const timer = setTimeout(() => { onClose(); }, duration);
     return () => clearTimeout(timer);
   }, [isVisible, onClose, duration]);
 

@@ -13,7 +13,7 @@ export const Navbar = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-custom-gray-300 bg-white">
-      <div className="relative mx-auto flex h-full max-w-desktop items-center justify-between px-5">
+      <div className="relative h-full max-w-desktop mx-auto px-5 flex items-center justify-between">
         {isSelecting && (
           <>
             <Button
@@ -21,7 +21,7 @@ export const Navbar = () => {
               variant="outline"
               size="navbar"
               onClick={cancelSelection}
-              className="absolute left-5 hidden w-30 md:block"
+              className="hidden md:block absolute left-5 w-30"
             >
               나가기
             </Button>
@@ -30,7 +30,7 @@ export const Navbar = () => {
               variant="black"
               size="navbar"
               onClick={cancelSelection}
-              className="absolute left-0 block md:hidden bg-white"
+              className="block md:hidden absolute left-0 bg-white"
             >
               <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#121212" strokeWidth="2">
                 <path d="M19 5L5 19M5 5l14 14" />
@@ -38,7 +38,7 @@ export const Navbar = () => {
             </Button>
           </>
         )}
-        <h1 className="flex-1 text-center text-2xl font-bold text-custom-black-900">
+        <h1 className="flex-1 text-2xl text-center font-bold text-custom-black-900">
           {isSelecting ? '카테고리' : '과제'}
         </h1>
         <Button
@@ -48,7 +48,7 @@ export const Navbar = () => {
           disabled={!isSelecting || !canProceed}
           disabledTextWhite={true}
           onClick={confirmSelection}
-          className="absolute right-5 hidden w-30 md:block"
+          className="hidden md:block absolute right-5 w-30"
         >
           다음으로
         </Button>
